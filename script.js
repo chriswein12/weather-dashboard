@@ -31,7 +31,7 @@ function displayCities() {
 $("#city-list").on("click", "button", function() {
     var selectCity = $(this).text();
     console.log(selectCity);
-    // todaysWeather(selectCity);
+    todaysWeather(selectCity);
     // weeklyWeather(selectCity);
 
 })
@@ -44,7 +44,7 @@ var citySelector = function(event) {
 
 
     if (cityName) {
-        // todaysWeather(cityName);
+        todaysWeather(cityName);
         // weeklyWeather(cityName);
         var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
@@ -57,6 +57,23 @@ var citySelector = function(event) {
     } else {
         alert("Please enter a city name");
     }
+}
+
+var todaysWeather = function (city) {
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                console.log(data);
+                displayTodaysWeather(data, city);
+            })
+        }
+    });
+}
+
+function displayTodaysWeather (weatherData, city) {
+    console.log(weatherData);
 }
 
 
