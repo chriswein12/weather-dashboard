@@ -8,6 +8,8 @@ var todaysWeatherEl = document.querySelector("#todays-weather");
 var weeklyWeatherEl = document.querySelector("#weekly-weather");
 
 function displayCities() {
+    historyEl.textContent = "";
+
     cities = JSON.parse(localStorage.getItem("cities")) || [];
     cities.reverse();
     console.log(cities);
@@ -48,6 +50,7 @@ var citySelector = function(event) {
     if (cityName) {
         todaysWeather(cityName);
         // weeklyWeather(cityName);
+
         var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
        if (!cities.includes(cityName)) {
@@ -62,7 +65,7 @@ var citySelector = function(event) {
 }
 
 var todaysWeather = function (city) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
     
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -79,18 +82,55 @@ function displayTodaysWeather (weatherData) {
     console.log(month + "/" + date + "/" + year);
     todaysWeatherEl.textContent = "";
 
-    var titleEl = document.createElement("h2")
+    var lat = weatherData.coord.lat
+    var lon = weatherData.coord.lon
+
+    var titleEl = document.createElement("h2");
     titleEl.textContent = weatherData.name + " (" + month + "/" + date + "/" + year + ")";
-    var iconEl = document.createElement("i");
-    iconEl = 
+    var iconEl = document.createElement("img");
+    iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png")
 
+    var temperatureEl = document.createElement("p");
+    temperatureEl.textContent = "Temperature: " + Math.round(weatherData.main.temp) + " °F"
+
+    var humidityEl = document.createElement("p");
+    humidityEl.textContent = "Humidity: " + weatherData.main.humidity + "%";
+
+    var windSpeedEl = document.createElement("p");
+    windSpeedEl.textContent = "Wind Speed: " + Math.round(weatherData.wind.speed) + " MPH";
+
+
+    titleEl.append(iconEl);
     todaysWeatherEl.appendChild(titleEl);
+    todaysWeatherEl.appendChild(temperatureEl);
+    todaysWeatherEl.appendChild(humidityEl);
+    todaysWeatherEl.appendChild(windSpeedEl);
+
+    var uvData = function(data) {
+        console.log(data.value);
+
+        var uvIndexEl = document.createElement("p");
+        if (data.value <= 2) {
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-success'>" + data.value + "</span>";
+        } 
+        else if (data.value <= 5) {
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-warning'>" + data.value + "</span>";
+        }
+        else {
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-danger'>" + data.value + "</span>";
+        }
     
-  
+        todaysWeatherEl.appendChild(uvIndexEl);
+
+    }
+    
+    fetch("http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey)
+    .then(function(response){
+        response.json().then(function(data) {
+            uvData(data);
+        }); 
+    }); 
 }
-
-
-
 
 
 
