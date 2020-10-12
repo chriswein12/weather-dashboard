@@ -4,6 +4,8 @@ var citySearchFormEl = document.querySelector("#city-search-form");
 var citySearchInputEl = document.querySelector("#search-input");
 var citySearchBtnEl = document.querySelector("#search-button");
 var historyEl = document.querySelector("#city-list");
+var todaysWeatherEl = document.querySelector("#todays-weather");
+var weeklyWeatherEl = document.querySelector("#weekly-weather");
 
 function displayCities() {
     cities = JSON.parse(localStorage.getItem("cities")) || [];
@@ -65,15 +67,26 @@ var todaysWeather = function (city) {
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
-                console.log(data);
-                displayTodaysWeather(data, city);
+                displayTodaysWeather(data);
             })
         }
     });
 }
 
-function displayTodaysWeather (weatherData, city) {
+function displayTodaysWeather (weatherData) {
+    var [month, date, year] = ( new Date() ).toLocaleDateString().split("/");
     console.log(weatherData);
+    console.log(month + "/" + date + "/" + year);
+    todaysWeatherEl.textContent = "";
+
+    var titleEl = document.createElement("h2")
+    titleEl.textContent = weatherData.name + " (" + month + "/" + date + "/" + year + ")";
+    var iconEl = document.createElement("i");
+    iconEl = 
+
+    todaysWeatherEl.appendChild(titleEl);
+    
+  
 }
 
 
