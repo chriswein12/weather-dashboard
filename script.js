@@ -20,17 +20,21 @@ function displayCities() {
 
     for (i = 0; i < limit; i++) {
         var cityListEl = document.createElement("button");
-        cityListEl.classList = "list-group-item list"
+        cityListEl.classList = "list-group-item list-group-item-action"
         cityListEl.id = "city-button-" + i;
         cityListEl.textContent = cities[i];
 
         historyEl.appendChild(cityListEl);
-
-
     }
-
-
 }
+
+$("#city-list").on("click", "button", function() {
+    var selectCity = $(this).text();
+    console.log(selectCity);
+    // todaysWeather(selectCity);
+    // weeklyWeather(selectCity);
+
+})
 
 var citySelector = function(event) {
     debugger;
