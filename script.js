@@ -41,24 +41,34 @@ $("#city-list").on("click", "button", function() {
 })
 
 var citySelector = function(event) {
-    debugger;
     event.preventDefault();
 
     var cityName = citySearchInputEl.value.trim();
 
 
     if (cityName) {
-        todaysWeather(cityName);
-        weeklyWeather(cityName);
+        var apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey + "&units=imperial";
+        fetch(apiUrl).then(function(response) {
+            if (response.ok) {
+                todaysWeather(cityName);
+                weeklyWeather(cityName);
 
-        var cities = JSON.parse(localStorage.getItem("cities")) || [];
+                var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
-       if (!cities.includes(cityName)) {
-       cities.push(cityName);
-       console.log(cities);
-       localStorage.setItem("cities", JSON.stringify(cities));
-       displayCities();  
-       }
+                if (!cities.includes(cityName)) {
+                cities.push(cityName);
+                console.log(cities);
+                localStorage.setItem("cities", JSON.stringify(cities));
+                displayCities();  
+                }
+            } else {
+                alert("Unable to obtain weather for that city. Please check spelling of city.");
+            }
+
+        })
+        .catch(function(error) {
+            alert("Unable to connect to weather service at this time")
+        });
     } else {
         alert("Please enter a city name");
     }
@@ -146,6 +156,9 @@ var weeklyWeather = function(city) {
 
 function displayWeeklyWeather (weeklyData) {
     console.log(weeklyData);
+
+    weeklyWeatherEl.textContent = "";
+
     var weeklyHeaderEl = document.createElement("h3");
     weeklyHeaderEl.className = "p-2";
     weeklyHeaderEl.textContent = "5-Day Forecast:";
