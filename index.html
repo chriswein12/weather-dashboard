@@ -85,20 +85,20 @@
         <h1 class="text-center text-white bg-dark p-1">Weather Dashboard</h1>
     </header>
     
-    <main class="container">
+    <main class="container-fluid">
         <section class="row">
-            <aside class="col-3 bg-light">
+            <aside class="mb-5 col-12 col-xl-3 bg-light">
                 <h3>Search for a City:</h3>
                 <form id="city-search-form" class="form-inline form-group">
                     <input id="search-input" type="text" class="form-control"/>
                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                 </form>
-                <ul id="city-list"></ul>
+                <ul id="city-list" class=""></ul>
 
             </aside>
 
-            <div class="col-9">
-                <div id="todays-weather" class="p-2 border border-dark rounded-lg"></div>
+            <div class="col-12 col-xl-9">
+                <div id="todays-weather"></div>
                 <div id="weekly-weather"></div>
             </div>
         </section>

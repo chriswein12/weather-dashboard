@@ -87,6 +87,7 @@ var todaysWeather = function (city) {
 }
 
 function displayTodaysWeather (weatherData) {
+    todaysWeatherEl.classList = "border border-dark p-2 rounded-lg"
     var [month, date, year] = ( new Date() ).toLocaleDateString().split("/");
     console.log(weatherData);
     console.log(month + "/" + date + "/" + year);
