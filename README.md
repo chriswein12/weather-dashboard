@@ -41,4 +41,4 @@ https://chriswein12.github.io/weather-dashboard/
 
 ## Credits
 
-* Project completed by Chris Wein*
+*Project completed by Chris Wein*
