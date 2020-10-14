@@ -36,7 +36,7 @@ $("#city-list").on("click", "button", function() {
     var selectCity = $(this).text();
     console.log(selectCity);
     todaysWeather(selectCity);
-    // weeklyWeather(selectCity);
+    weeklyWeather(selectCity);
 
 })
 
@@ -49,7 +49,7 @@ var citySelector = function(event) {
 
     if (cityName) {
         todaysWeather(cityName);
-        // weeklyWeather(cityName);
+        weeklyWeather(cityName);
 
         var cities = JSON.parse(localStorage.getItem("cities")) || [];
 
@@ -65,7 +65,7 @@ var citySelector = function(event) {
 }
 
 var todaysWeather = function (city) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
     
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -111,13 +111,13 @@ function displayTodaysWeather (weatherData) {
 
         var uvIndexEl = document.createElement("p");
         if (data.value <= 2) {
-            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-success'>" + data.value + "</span>";
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-success rounded lg p-1'>" + data.value + "</span>";
         } 
         else if (data.value <= 5) {
-            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-warning'>" + data.value + "</span>";
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-warning rounded-lg p-1'>" + data.value + "</span>";
         }
         else {
-            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-danger'>" + data.value + "</span>";
+            uvIndexEl.innerHTML = "UV Index: " + "<span class='text-white bg-danger rounded-lg p-1'>" + data.value + "</span>";
         }
     
         todaysWeatherEl.appendChild(uvIndexEl);
@@ -130,6 +130,68 @@ function displayTodaysWeather (weatherData) {
             uvData(data);
         }); 
     }); 
+}
+
+var weeklyWeather = function(city) {
+   var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
+
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayWeeklyWeather(data);
+            })
+        }
+    });
+}
+
+function displayWeeklyWeather (weeklyData) {
+    console.log(weeklyData);
+    var weeklyHeaderEl = document.createElement("h3");
+    weeklyHeaderEl.className = "p-2";
+    weeklyHeaderEl.textContent = "5-Day Forecast:";
+    weeklyWeatherEl.appendChild(weeklyHeaderEl);
+
+    var weeklyCardHolderEl = document.createElement("div")
+    weeklyCardHolderEl.className = "row";
+
+    for (var i = 0; i < weeklyData.list.length; i++) {
+
+        if (weeklyData.list[i].dt_txt.indexOf("18:00:00") !== -1) {
+
+            var weeklyColEl = document.createElement("div");
+            weeklyColEl.classList = "col-auto"
+
+            var weeklyCardEl = document.createElement("div");
+            weeklyCardEl.classList = "col-auto mb-4 card bg-primary text-white justify";
+
+            var weeklyDateEl = document.createElement("h5");
+            weeklyDateEl.classList = "card-title"
+            weeklyDateEl.textContent = moment.unix(weeklyData.list[i].dt).utc().format("MM/DD/YYYY");
+            console.log(weeklyDateEl);
+
+            var weeklyIconEl = document.createElement("img");
+            weeklyIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weeklyData.list[i].weather[0].icon + "@2x.png");
+
+            var weeklyTempEl = document.createElement("p");
+            weeklyTempEl.textContent = "Temp: " + Math.round(weeklyData.list[i].main.temp) + " °F"
+
+            var weeklyHumidityEl = document.createElement("p");
+            weeklyHumidityEl.textContent = "Humidity: " + weeklyData.list[i].main.humidity + "%";
+            console.log(weeklyHumidityEl);
+
+            weeklyCardEl.appendChild(weeklyDateEl);
+            weeklyCardEl.appendChild(weeklyDateEl);
+            weeklyCardEl.appendChild(weeklyIconEl);
+            weeklyCardEl.appendChild(weeklyTempEl);
+            weeklyCardEl.appendChild(weeklyHumidityEl);
+            weeklyColEl.appendChild(weeklyCardEl);
+            weeklyCardHolderEl.appendChild(weeklyColEl);
+        }
+    }
+
+    weeklyWeatherEl.appendChild(weeklyCardHolderEl);
+
+
 }
 
 
