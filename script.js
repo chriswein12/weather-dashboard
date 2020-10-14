@@ -50,7 +50,7 @@ var citySelector = function(event) {
 
     // checks if a city name has been entered
     if (cityName) {
-        var apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey + "&units=imperial";
+        var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey + "&units=imperial";
         // this fetch is just for checking to see if we get a valid response from the api before continuing.
         fetch(apiUrl).then(function(response) {
             if (response.ok) {
@@ -81,7 +81,7 @@ var citySelector = function(event) {
 
 // first main function to pull up todays weather using the openweathermap API
 var todaysWeather = function (city) {
-    var apiUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
     
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -107,7 +107,7 @@ function displayTodaysWeather (weatherData) {
     var titleEl = document.createElement("h2");
     titleEl.textContent = weatherData.name + " (" + month + "/" + date + "/" + year + ")";
     var iconEl = document.createElement("img");
-    iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png")
+    iconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherData.weather[0].icon + "@2x.png")
 
     // creating temp
     var temperatureEl = document.createElement("p");
@@ -147,7 +147,7 @@ function displayTodaysWeather (weatherData) {
     }
     
     // fetch to receive UV Index data
-    fetch("http://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey)
+    fetch("https://api.openweathermap.org/data/2.5/uvi?lat="+lat+"&lon="+lon+"&appid="+apiKey)
     .then(function(response){
         response.json().then(function(data) {
             uvData(data);
@@ -157,7 +157,7 @@ function displayTodaysWeather (weatherData) {
 
 // second main function to pull 5 day forecast info
 var weeklyWeather = function(city) {
-   var apiUrl = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
+   var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
 
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
@@ -198,7 +198,7 @@ function displayWeeklyWeather (weeklyData) {
             console.log(weeklyDateEl);
 
             var weeklyIconEl = document.createElement("img");
-            weeklyIconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + weeklyData.list[i].weather[0].icon + "@2x.png");
+            weeklyIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weeklyData.list[i].weather[0].icon + "@2x.png");
 
             var weeklyTempEl = document.createElement("p");
             weeklyTempEl.textContent = "Temp: " + Math.round(weeklyData.list[i].main.temp) + " °F"
