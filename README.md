@@ -35,7 +35,7 @@ https://chriswein12.github.io/weather-dashboard/
 
 ## How the Website Looks
 
-![image of the website](./assets/weather-dashboard-image.png)
+![image of the website](./assets/images/weather-dashboard-image.png)
 
 <br/>
 
